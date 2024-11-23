@@ -1,0 +1,25 @@
+@use '../../assets/styles/variables' as *;
+
+.not-found {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  padding: 0 25px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out;
+}
+
+.not-found.fadeIn {
+  opacity: 1;
+  visibility: visible;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

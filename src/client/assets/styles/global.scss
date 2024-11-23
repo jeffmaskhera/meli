@@ -1,0 +1,9 @@
+@use './variables';
+@use './iux';
+
+//pages
+@use '../../pages/index' as pagesIndex;
+
+
+//components
+@use '../../component/index' as componentIndex;;
