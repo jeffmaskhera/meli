@@ -1,4 +1,7 @@
+@use './header/header';
 @use './finder/finder';
+@use './menu/menu';
+@use './side-menu/side-menu';
 @use './search-result/searchResult';
 @use './bread-crumb/breadCrumb';
 @use './spinner/spinner';

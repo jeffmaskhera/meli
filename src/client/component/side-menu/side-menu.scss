@@ -1,0 +1,39 @@
+@use '../../assets/styles/variables' as *;
+.side-menu {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  &__notification {
+    position: relative;
+    &__bullet {
+      width: 9px;
+      height: 9px;
+      border-radius: 100%;
+      background: $red;
+      position: absolute;
+      top: -3px;
+      right: -3px;
+    }
+  }
+
+  &__container {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  li {
+    padding: 5px 8px;
+    cursor: pointer;
+    color: $black;
+    font-weight: 300;
+  }
+  li:hover {
+    color: $greyMedium;
+  }
+}

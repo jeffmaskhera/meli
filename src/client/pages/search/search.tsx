@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Finder from "../../component/finder/finder";
+import Header from "../../component/header/header";
 import SearchResult from "../../component/search-result/searchResult";
 /*import BreadCrumb from "../../component/bread-crumb/breadCrumb";*/
 import Spinner from "../../component/spinner/spinner";
@@ -61,7 +61,7 @@ const Search: React.FC<ItemsProps> = ({ params }) => {
     return (
         <div className="search">
             {loading && <Spinner />}
-            <Finder/>
+            <Header/>
 
        {/*     {breadCrumb &&
             breadCrumb.length > 0 && <BreadCrumb product={breadCrumb}/>

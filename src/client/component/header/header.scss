@@ -1,0 +1,7 @@
+@use '../../assets/styles/variables' as *;
+.header {
+  display: grid;
+  gap: 10px;
+  background: $yellow;
+  position: relative;
+}

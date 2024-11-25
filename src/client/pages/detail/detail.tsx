@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import Finder from "../../component/finder/finder";
-import axios from 'axios';
+import Header from "../../component/header/header";
 import {formatNumberPrice} from "../../../utils/helpers";
 /*import BreadCrumb from "../../component/bread-crumb/breadCrumb";*/
 import Spinner from "../../component/spinner/spinner";
@@ -51,7 +50,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
 
     return (
         <div className="detail">
-            <Finder/>
+            <Header/>
       {/*      {breadCrumb &&
             breadCrumb.length > 0 && <BreadCrumb product={breadCrumb}/>
             }*/}

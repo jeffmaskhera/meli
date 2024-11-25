@@ -1,12 +1,12 @@
 import React  from 'react'
-import Finder from "../../component/finder/finder";
+import Header from "../../component/header/header";
 
 
 const Home = () => {
 
     return (
         <div className="home">
-            <Finder/>
+            <Header/>
         </div>
     );
 };
