@@ -89,9 +89,9 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                 <div className="detail__main__container__grid__grid-product__info-top">
                                     <p>{product.condition} - {product.quantitySold} vendidos</p>
                                     <h2>{product.title}</h2>
-                                    <StarsRating rating={product?.rating} totalQualification={product?.totalQualification}/>
+                                    <StarsRating rating={product?.rating ?? 0} totalQualification={product?.totalQualification ?? 0} />
                                     {
-                                        product?.positionInSales <= 3 &&
+                                        product?.positionInSales && product?.positionInSales <= 3 &&
                                             <div className="detail__main__container__grid__grid-product__info-top__flex-contain">
                                                 <LabelButton color={LabelColorEnum.ORANGE} text={"MÁS VENDIDO"}/>
                                                 <p className="detail__main__container__grid__grid-product__info-top__flex-contain__blue-info">{`${product?.positionInSales}° en ${product?.title}`}</p>
@@ -103,7 +103,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                     <h2 className="detail__main__container__grid__grid-product__info-top__price">$ {formatNumberPrice(product?.price)}</h2>
                                     <h3>Lo que tienes que saber de este producto</h3>
                                     {
-                                        product?.attributes?.fullInfo.slice(0, 5).map((item, keyId)=> {
+                                        product?.attributes?.fullInfo.slice(0, 6).map((item, keyId)=> {
                                             return (
                                                 <li key={keyId}>
                                                     {item}
@@ -126,7 +126,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                         </div>
                                         <h3>Cuotas sin interéses</h3>
                                         <h3>$ {formatNumberPrice(product.creditPrice)}</h3>
-                                        <p>En <span className="color-green">12 x {formatNumberPrice(product.creditPrice/12)} sin interés</span></p>
+                                        <p>En <span className="color-green">12 x {formatNumberPrice(product.creditPrice ? product.creditPrice / 12 : 0)} sin interés</span></p>
                                         <p>Vendido por: {product.sellerName}</p>
                                     </div>
 

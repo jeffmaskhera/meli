@@ -1,13 +1,13 @@
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDom from 'react-dom/client'; // Asegúrate de usar react-dom/client
 import './assets/styles/global.scss';
 import Home from './pages/home/home';
 import Search from "./pages/search/search";
 import Detail from "./pages/detail/detail";
-import {switchCases} from "../utils/helpers";
-import {RoutesClient} from "./types/types";
-/*import { defineCustomElements } from 'ui-meli-components/loader';*/
+import { switchCases } from "../utils/helpers";
+import { RoutesClient } from "./types/types";
 
+/* import { defineCustomElements } from 'ui-meli-components/loader'; */
 /*
 defineCustomElements(window);
 */
@@ -43,14 +43,18 @@ if (currentRoute.startsWith(RoutesClient.DETAIL)) {
 
 const componentToRender = switchCases(currentRoute, {
     [RoutesClient.HOME]: <Home items={window.__data__} />,
-    [RoutesClient.ITEMS]: <Search params={searchParam}/>,
-    [RoutesClient.DETAIL + detailId]: <Detail detailId={detailId}/>,
-    //'default': <div>no encontrado</div>, // Página no encontrada
+    [RoutesClient.ITEMS]: <Search params={searchParam} />,
+    [RoutesClient.DETAIL + detailId]: <Detail detailId={detailId} />,
+    // 'default': <div>no encontrado</div>, // Página no encontrada
 });
 
-ReactDom.hydrate(componentToRender, document.getElementById('root'));
+// Verifica si el contenedor con id 'root' existe
+const rootElement = document.getElementById('root');
+if (rootElement) {
+    // Si el contenedor existe, usa hydrateRoot para renderizar el componente
+    ReactDom.hydrateRoot(rootElement, componentToRender);
+} else {
+    // Si no se encuentra el contenedor, muestra un mensaje de error
+    console.error('Contenedor "root" no encontrado en el DOM.');
+}
 
-
-/*
-const app = <Home items={window.__data__}/>
-ReactDom.hydrate(app, document.getElementById('root'));*/
