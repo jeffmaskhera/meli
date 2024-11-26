@@ -3,12 +3,13 @@ export interface ProductModel {
     id: string;
     condition: string;
     mainImage: string;
-    price: string;
+    price: number;
     title: string;
     sellerName: string;
     quantitySold: number;
     attributes: attributesProduct;
     query: string;
+    freeShipping: boolean;
     // SIMULANDO OTROS CAMPOS
     rating?: number;
     totalQualification?: number;

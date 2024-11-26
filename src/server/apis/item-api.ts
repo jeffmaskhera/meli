@@ -2,14 +2,14 @@ import { Request, Response } from 'express';
 
 import {searchItems} from "../actions/products/products";
 import {getDecimalCount} from "../../utils/helpers";
-import {ApiResponseInterface, QueryParamsInterface} from "../interfaces/interfaces";
+import {ApiResponseItemsInterface, QueryParamsInterface} from "../interfaces/interfaces";
 
 export const getItemsApi = async (req: Request<{}, {}, {}, QueryParamsInterface>, res: Response) => {
     try {
         const { query } = req.query;
         const searchResults = await searchItems(query);
 
-        const formattedResponse: ApiResponseInterface = {
+        const formattedResponse: ApiResponseItemsInterface = {
             author: {
                 name: 'Jefrey',
                 lastname: 'Sánchez'

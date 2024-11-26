@@ -7,7 +7,10 @@
   &__container {
     border-radius: 6px;
     background: $white;
-    padding: 15px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 3px 1px rgba(168,168,168,1);
+    -moz-box-shadow: 0px 0px 3px 1px rgba(168,168,168,1);
+    box-shadow: 0px 0px 3px 1px rgba(168,168,168,1);
     &__item {
       display: grid;
       gap: 20px;

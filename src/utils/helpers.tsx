@@ -6,7 +6,6 @@ export function switchCases<T>(expression: string, cases: Record<string, T>) {
 
 export function formatNumberPrice(number: any) {
     if (typeof number !== 'number' || number < 0) {
-        console.log('El valor es negativo');
         return '';
     }
 

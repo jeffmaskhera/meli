@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import {ApiResponseInterface, QueryParamsInterface} from "../interfaces/interfaces";
+import {ApiResponseItemsInterface, ApiResponseProductInterface, QueryParamsInterface} from "../interfaces/interfaces";
 import {searchProduct} from "../actions/products/products";
 import {getDecimalCount} from "../../utils/helpers";
 
@@ -11,7 +11,7 @@ export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterfac
         }
         const productResults = await searchProduct(id);
 
-        const formattedResponse: ApiResponseInterface = {
+        const formattedResponse: ApiResponseProductInterface = {
             author: {
                 name: 'Jefrey',
                 lastname: 'Sánchez'
@@ -20,7 +20,8 @@ export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterfac
                 id: productResults?.id || '',
                 query: req.query.query || '',
                 title: productResults?.title || '',
-                picture: productResults?.thumbnail || '',
+                picture: productResults?.pictures[0].url || '',
+                pictures: productResults?.pictures,
                 price: {
                     currency: productResults?.currency_id || '',
                     amount: productResults?.price || 0,
@@ -30,6 +31,8 @@ export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterfac
                 free_shipping: productResults?.shipping?.free_shipping || false,
                 sellerName: productResults?.seller?.nickname || '',
                 attributes: productResults?.attributes || [],
+                soldQuantity: productResults?.initial_quantity || 0,
+                status: productResults?.status
             }]
         };
         res.json(formattedResponse);

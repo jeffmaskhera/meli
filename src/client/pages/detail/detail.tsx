@@ -10,6 +10,7 @@ import {LabelColorEnum} from "../../component/label/label.enum";
 import {UserModel} from "../../modules/user/domain/user-model";
 import {userUseCase} from "../../modules/user/infrastructure/provider";
 import {TypePurchaseEnum} from "../../modules/user/domain/user-enum";
+import Breadcrumb from "../../component/bread-crumb/bread-crumb";
 
 
 interface DetailProps {
@@ -22,11 +23,13 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
     const [product, setProduct] = useState<ProductModel>();
     const [userInfo, setUserInfo] = useState<UserModel>();
     const [loading, setLoading] = useState(false);
+    const [imageShow, setImageShow] = useState<string>('');
 
     const getProducts = async (id: string)=> {
         setLoading(true)
         const product = await productUseCase.get(id)
         setProduct(product)
+        setImageShow(product.mainImage)
         setLoading(false)
     }
 
@@ -56,6 +59,10 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
         }
     };
 
+    const captureNewImage =(e: any)=> {
+        setImageShow(e)
+    }
+
     useEffect(()=> {
         getProducts(detailId);
         getUser();
@@ -64,6 +71,8 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
     return (
         <div className="detail">
             <Header/>
+            {product && <Breadcrumb products={[product]} isDetail/>}
+
             <div className="detail__main">
                 <div className="detail__main__container">
                     {loading && <Spinner />}
@@ -72,45 +81,72 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                         <div className="detail__main__container__grid">
                             <div className="detail__main__container__grid__grid-product">
                                 <div className="detail__main__container__grid__grid-product__thumbnails">
-                                    {
-                                        product.thumbnailImages?.map((item, keyId)=> {
-                                            return (
-                                                <div className="detail__main__container__grid__grid-product__thumbnails__item-image" key={keyId}>
-                                                    <img src={item} alt="lkjasd" />
-                                                </div>
-                                            )
-                                        })
+                                    {product?.thumbnailImages?.map((item, keyId) => {
+                                        const totalThumbnails = product.thumbnailImages?.length || 0;
 
-                                    }
+                                        // Si hemos llegado al noveno elemento visible
+                                        if (keyId === 8 && totalThumbnails > 9) {
+                                            return (
+                                                <React.Fragment key={keyId}>
+                                                    <div
+                                                        className="detail__main__container__grid__grid-product__thumbnails__item-image"
+                                                        onMouseEnter={() => captureNewImage(item)}
+                                                    >
+                                                        <img src={item} alt={product?.title} />
+                                                        <div className="detail__main__container__grid__grid-product__thumbnails__item-image__more-items">
+                                                            + {totalThumbnails - 9}
+                                                        </div>
+                                                    </div>
+                                                </React.Fragment>
+                                            );
+                                        }
+
+                                        // Mostrar solo los primeros 9 elementos
+                                        if (keyId < 9) {
+                                            return (
+                                                <div
+                                                    className="detail__main__container__grid__grid-product__thumbnails__item-image"
+                                                    key={keyId}
+                                                    onMouseEnter={() => captureNewImage(item)}
+                                                >
+                                                    <img src={item} alt={product?.title} />
+                                                </div>
+                                            );
+                                        }
+
+                                        return null; // Ignorar cualquier elemento después del noveno
+                                    })}
                                 </div>
                                 <div className="detail__main__container__grid__grid-product__image">
-                                    <img src={product.mainImage} alt={product.title} />
+                                    <img src={imageShow} alt={product.title} />
                                 </div>
                                 <div className="detail__main__container__grid__grid-product__info-top">
-                                    <p>{product.condition} - {product.quantitySold} vendidos</p>
-                                    <h2>{product.title}</h2>
-                                    <StarsRating rating={product?.rating ?? 0} totalQualification={product?.totalQualification ?? 0} />
-                                    {
-                                        product?.positionInSales && product?.positionInSales <= 3 &&
+                                    <div className="grid-gap20">
+                                        <p>{product.condition} - {product.quantitySold} vendidos</p>
+                                        <h2>{product.title}</h2>
+                                        <StarsRating rating={product?.rating ?? 0} totalQualification={product?.totalQualification ?? 0} />
+                                        {
+                                            product?.positionInSales && product?.positionInSales <= 3 &&
                                             <div className="detail__main__container__grid__grid-product__info-top__flex-contain">
                                                 <LabelButton color={LabelColorEnum.ORANGE} text={"MÁS VENDIDO"}/>
                                                 <p className="detail__main__container__grid__grid-product__info-top__flex-contain__blue-info">{`${product?.positionInSales}° en ${product?.title}`}</p>
                                             </div>
-                                    }
-                                    {
-                                        product?.oldPrice && <h4 className="detail__main__container__grid__grid-product__info-top__old-price">$ {formatNumberPrice(product.oldPrice)}</h4>
-                                    }
-                                    <h2 className="detail__main__container__grid__grid-product__info-top__price">$ {formatNumberPrice(product?.price)}</h2>
-                                    <h3>Lo que tienes que saber de este producto</h3>
-                                    {
-                                        product?.attributes?.fullInfo.slice(0, 6).map((item, keyId)=> {
-                                            return (
-                                                <li key={keyId}>
-                                                    {item}
-                                                </li>
-                                            )
-                                        })
-                                    }
+                                        }
+                                        {
+                                            product?.oldPrice !== product?.price && <h4 className="detail__main__container__grid__grid-product__info-top__old-price">$ {formatNumberPrice(product.oldPrice)}</h4>
+                                        }
+                                        <h2 className="detail__main__container__grid__grid-product__info-top__price">$ {formatNumberPrice(product?.price)}</h2>
+                                        <h3>Lo que tienes que saber de este producto</h3>
+                                        {
+                                            product?.attributes?.fullInfo.slice(0, 6).map((item, keyId)=> {
+                                                return (
+                                                    <li key={keyId}>
+                                                        {item}
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                    </div>
                                 </div>
 
                                 <div className="detail__main__container__grid__grid-product__third-column">

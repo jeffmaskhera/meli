@@ -1,0 +1,45 @@
+@use '../../assets/styles/variables' as *;
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  list-style: none;
+  font-size: 14px;
+  margin: auto;
+  max-width: $tablet-xl;
+  padding: 5px 30px;
+
+  &__item {
+    display: inline-block;
+    margin-right: 10px;
+
+    &:not(:last-child)::after {
+      content: ">";
+      margin-left: 10px;
+      color: #6c757d;
+    }
+
+
+    &--active {
+      color: $blue;
+    }
+  }
+
+  &__link {
+    color: $greyLight;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__separator::after {
+    content: ">";
+    margin-left: 10px;
+    color: $greyLight;
+  }
+}

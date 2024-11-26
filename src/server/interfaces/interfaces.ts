@@ -11,7 +11,7 @@ export interface PriceInterface {
     decimals: number;
 }
 
-export interface ItemInterface {
+export interface ItemsInterface {
     id: string;
     query: string;
     title: string;
@@ -23,10 +23,33 @@ export interface ItemInterface {
     attributes: any[];
 }
 
-export interface ApiResponseInterface {
+export interface ApiResponseItemsInterface {
     author: {
         name: string;
         lastname: string;
     };
-    items: ItemInterface[];
+    items: ItemsInterface[];
+}
+
+export interface ProductInterface {
+    id: string;
+    query: string;
+    title: string;
+    picture: string;
+    pictures: [];
+    price: PriceInterface;
+    condition: string;
+    free_shipping: boolean;
+    sellerName: string;
+    attributes: any[];
+    soldQuantity: number;
+    status: string
+}
+
+export interface ApiResponseProductInterface {
+    author: {
+        name: string;
+        lastname: string;
+    };
+    items: ProductInterface[];
 }

@@ -16,7 +16,6 @@ const Finder=()=> {
     };
 
     const searching =()=> {
-        console.log()
         window.location.href = (`/items?search=${input}`)
     }
 
