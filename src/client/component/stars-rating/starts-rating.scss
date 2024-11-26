@@ -1,0 +1,44 @@
+@use '../../assets/styles/variables' as *;
+
+.stars-qualify {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  p {
+    font-size: 12px;
+    font-weight: 300;
+    color: $greyLight;
+  }
+
+  &__star {
+    position: relative;
+    display: inline-block;
+    background-color: $greySuperLight;
+    width: 20px;
+    height: 20px;
+    clip-path: polygon(
+                    50% 0%,
+                    61% 35%,
+                    98% 35%,
+                    68% 57%,
+                    79% 91%,
+                    50% 70%,
+                    21% 91%,
+                    32% 57%,
+                    2% 35%,
+                    39% 35%
+    ); /* Forma de estrella */
+    border: 1px solid #ccc;
+  }
+
+  &__star.filled {
+    background-color: $blue; /* Color de estrellas llenas */
+  }
+
+  &__star.half {
+    background: linear-gradient(90deg, $blue 50%, $greySuperLight 50%);
+    border: 1px solid #ccc;
+  }
+}

@@ -42,6 +42,10 @@ p {
   gap: 10px;
 }
 
+.w100 {
+  width: 100%;
+}
+
 .button {
   background: $blue;
   color: $white;
@@ -53,4 +57,29 @@ p {
 
 .button:hover {
   background: $blueHover;
+}
+
+.button:disabled {
+  border: 1px solid $greyLight;
+  background: $greyLight;
+}
+
+.color-green {
+  color: $green;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.font15 {
+  font-size: 14px;
+}
+
+.font-w300 {
+  font-weight: 300 !important;
+}
+
+.font-w400 {
+  font-weight: 400;
 }

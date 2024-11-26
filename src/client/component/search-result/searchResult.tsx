@@ -21,7 +21,7 @@ const SearchResult: React.FC<SearchResultProps> = ({ products, selectorIdProduct
                         <div key={i} className="search-result__container__item">
                             <div className="search-result__container__item__left-side">
                                 <div className="search-result__container__item__left-side__image" onClick={() => selectorProduct(item.id)}>
-                                    <img src={item.image} alt={item.title} />
+                                    <img src={item.mainImage} alt={item.title} />
                                 </div>
                                 <div className="search-result__container__item__left-side__grid-info">
                                     <h2>{item.price}</h2>

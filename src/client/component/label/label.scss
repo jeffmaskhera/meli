@@ -1,0 +1,25 @@
+@use '../../assets/styles/variables' as *;
+
+
+.label {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+  color: $white;
+  max-width: max-content;
+  font-size: 10px;
+
+  &__color-orange {
+    background: $orange;
+  }
+
+  &__color-blue {
+    background: $blue;
+  }
+
+  &__color-yellow {
+    background: $yellow;
+  }
+}

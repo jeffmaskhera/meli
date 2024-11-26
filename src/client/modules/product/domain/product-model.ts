@@ -2,11 +2,23 @@
 export interface ProductModel {
     id: string;
     condition: string;
-    image: string;
+    mainImage: string;
     price: string;
     title: string;
     sellerName: string;
     quantitySold: number;
-    attributes: string[];
-    query: string
+    attributes: attributesProduct;
+    query: string;
+    // SIMULANDO OTROS CAMPOS
+    rating?: number;
+    totalQualification?: number;
+    positionInSales?: number;
+    oldPrice?: number;
+    thumbnailImages?: string[];
+    creditPrice?: number;
+}
+
+
+interface attributesProduct {
+    fullInfo: string[]
 }

@@ -47,13 +47,22 @@ const builderData =(product: any): ProductModel=> {
     return {
         id: product?.['id'],
         condition: determineCondition(product?.['condition']),
-        image: product?.['picture'],
+        mainImage: product?.['picture'],
         price: product?.['price']?.['amount'] || '',
         title: product?.['title'] || "Unknown Product",
         sellerName: product?.['seller']?.['name'] || "Sin vendedor",
         quantitySold: product?.['sold_quantity'] || 0,
-        attributes: product?.['attributes']?.map((attr: any) => `${attr.name}: ${attr.value}`) || [],
+        attributes: {
+            fullInfo: product?.['attributes']?.map((attr: any) => `${attr.name}: ${attr.value_name}`) || [],
+        },
         query: product?.['query'] || "",
+        // Parametros mockeados ya que el API no lo trae
+        rating: 3.8,
+        totalQualification: 456,
+        positionInSales: 2,
+        oldPrice: increaseBy40Percent(product?.['price']?.['amount']),
+        thumbnailImages: simulateThumbnailImages(product?.['picture']),
+        creditPrice: increaseBy30Percent(product?.['price']?.['amount'])
     }
 }
 
@@ -64,3 +73,14 @@ const determineCondition =(condition: string): string=> {
         'default': '',
     }) || '';
 }
+
+// función incrementar valor para simular precio antiguo
+const increaseBy40Percent = (value: number): number => value * 1.4;
+
+// función incrementar valor para simular crédito
+const increaseBy30Percent = (value: number): number => value * 1.3;
+
+// función simulación de guardado de imagenes
+const simulateThumbnailImages = (mainImage: string, count: number = 4): string[] => {
+    return Array.from({ length: count }, () => mainImage);
+};

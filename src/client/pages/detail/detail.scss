@@ -1,9 +1,7 @@
 @use '../../assets/styles/variables' as *;
 
 .detail {
-  .bread-crumb {
-    margin-top: 40px;
-  }
+
   &__main {
     max-width: $tablet-xl;
     padding: 5px 30px;
@@ -20,8 +18,34 @@
         gap: 20px;
         &__grid-product {
           display: grid;
-          grid-template-columns: 1fr 200px;
+          grid-template-columns: 50px 1fr 300px 200px;
           gap: 20px;
+          &__thumbnails {
+            display: grid;
+            grid-auto-flow: row;
+            gap: 8px;
+            align-items: flex-start;
+            align-content: flex-start;
+            &__item-image {
+              width: 50px;
+              height: 50px;
+              border-radius: 4px;
+              overflow: hidden;
+              border: 1px solid $black;
+              cursor: pointer;
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+              :hover {
+                border: 1px solid $blue;
+              }
+            }
+            &__item-image:hover {
+              border: 1px solid $blue;
+            }
+          }
           &__image {
             width: 100%;
             height: 47vh;
@@ -37,38 +61,106 @@
             gap: 20px;
             align-items: flex-start;
             align-content: flex-start;
+            &__price {
+              font-weight: 300;
+              font-size: 35px;
+            }
+            &__old-price {
+              text-decoration: line-through;
+              font-weight: 300;
+            }
+            &__flex-contain {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+              align-items: center;
+              white-space: nowrap;
+              gap: 5px;
+              &__blue-info {
+                color: $blue;
+                font-size: 10px;
+                font-weight: 400;
+              }
+
+            }
+
+
+            h3 {
+              font-size: 14px;
+              font-weight: 600;
+            }
           }
-          &__info-down {
-            display: grid;
-            gap: 20px;
-            align-items: flex-start;
-            align-content: flex-start;
-            grid-column: span 2 / 3;
+
+          &__third-column {
+            border: 1px solid $greySuperLight;
+            border-radius: 4px;
+            &__select1 {
+              border-bottom: 1px solid $greySuperLight;
+              padding: 8px;
+              display: grid;
+              gap: 5px;
+              position: relative;
+              p {
+                font-size: 12px;
+                font-weight: 400;
+              }
+              h3 {
+                font-size: 15px;
+              }
+            }
+
+
+            &__select2 {
+              padding: 8px;
+              display: grid;
+              gap: 5px;
+              position: relative;
+              p {
+                font-size: 12px;
+                font-weight: 400;
+              }
+
+              .price {
+                font-size: 20px;
+              }
+
+              &__inter-grid {
+                display: grid;
+                grid-auto-flow: column;
+                gap: 10px;
+                justify-content: flex-start;
+              }
+            }
           }
         }
       }
     }
   }
 
+  .radius-position {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
 }
 
 
-@media (max-width: $mobile) {
+
+@media (max-width: $tablet-xl) {
   .detail {
     &__main {
       &__container {
         &__grid {
           &__grid-product {
             grid-template-columns: 1fr;
-            &__info-down {
-              grid-column: unset;
-              grid-row: 2;
+            &__thumbnails {
+              display: grid;
+              grid-auto-flow: column;
+              justify-content: flex-start;
             }
           }
         }
       }
     }
-
   }
-
 }
