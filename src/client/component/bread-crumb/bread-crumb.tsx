@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import {getCache, setCache} from "../../cache/local-storage";
+import {LocalStorageEnum} from "../../cache/local-storage.enum";
 
 // Definiendo la interfaz
 interface Product {
@@ -36,7 +38,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
     useEffect(() => {
         if (isDetail && products.length > 0) {
             // Si estamos en el detalle de un producto
-            const storedCategory = localStorage.getItem('BreadCrumb');
+            const storedCategory = getCache(LocalStorageEnum.BREADCRUMB)
             if (storedCategory && products[0] && products[0].title) {
                 // Si hay una categoría almacenada en el localStorage y el producto tiene un título
                 setCategory(storedCategory);
@@ -50,7 +52,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
             // Si estamos en la página de búsqueda
             const mostFrequentCategory = getMostFrequentCategory(products);
             setCategory(mostFrequentCategory);
-            localStorage.setItem('BreadCrumb', mostFrequentCategory);  // Guarda la categoría más frecuente en localStorage
+            setCache(LocalStorageEnum.BREADCRUMB, mostFrequentCategory)// Guarda la categoría más frecuente en localStorage
             setTitle("");  // No mostramos título en la página de búsqueda
         }
     }, [products, isDetail]);
