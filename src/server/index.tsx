@@ -47,7 +47,6 @@ app.get(RoutesEnum.DetailProduct, async (req, res) => {
     try {
         const { id } = req.params;
         const product = await searchProduct(id);
-
         const html = renderDetailPage(product);
         res.send(html);
     } catch (error) {

@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import {ApiResponseItemsInterface, ApiResponseProductInterface, QueryParamsInterface} from "../interfaces/interfaces";
+import {Request, Response} from 'express';
+import {ApiResponseProductInterface, QueryParamsInterface} from "../interfaces/interfaces";
 import {searchProduct} from "../actions/products/products";
 import {getDecimalCount} from "../../utils/helpers";
 

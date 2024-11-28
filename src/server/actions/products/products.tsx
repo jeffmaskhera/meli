@@ -1,7 +1,6 @@
 import axios from "axios";
 
 
-
 export const searchItems = async (query: any): Promise<any[]> => {
     const limit = 4;
     try {
@@ -20,6 +19,6 @@ export const searchProduct = async (productId: string): Promise<any> => {
         return response.data || {};
     } catch (error) {
         console.error('Error searching product:', error);
-        throw error;
+        return {}
     }
 };

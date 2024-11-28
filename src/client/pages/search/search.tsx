@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Header from "../../component/header/header";
 import SearchResult from "../../component/search-result/searchResult";
 import Spinner from "../../component/spinner/spinner";
@@ -8,18 +8,13 @@ import {ProductModel} from "../../modules/product/domain/product-model";
 import {productUseCase} from "../../modules/product/infrastructure/provider";
 
 
-
-// Interfaz para el parámetro 'params'
 interface ItemsProps {
-    params: any; // params es 'any' como mencionaste
+    params: any;
 }
-
-
 const Search: React.FC<ItemsProps> = ({ params }) => {
     const [search, setSearch] = useState<string>(params);
     const [products, setProducts] = useState<ProductModel[]>([]);
     const [loading, setLoading] = useState(false);
-
 
     const getProducts = async (value: string) => {
         setLoading(true)

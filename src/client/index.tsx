@@ -4,13 +4,10 @@ import './assets/styles/global.scss';
 import Home from './pages/home/home';
 import Search from "./pages/search/search";
 import Detail from "./pages/detail/detail";
-import { switchCases } from "../utils/helpers";
-import { RoutesClient } from "./types/types";
+import {switchCases} from "../utils/helpers";
+import {RoutesClient} from "./types/types";
 
-/* import { defineCustomElements } from 'ui-meli-components/loader'; */
-/*
-defineCustomElements(window);
-*/
+;
 
 const linkElement = document.createElement('link');
 linkElement.rel = 'preconnect';
@@ -45,7 +42,7 @@ const componentToRender = switchCases(currentRoute, {
     [RoutesClient.HOME]: <Home items={window.__data__} />,
     [RoutesClient.ITEMS]: <Search params={searchParam} />,
     [RoutesClient.DETAIL + detailId]: <Detail detailId={detailId} />,
-    // 'default': <div>no encontrado</div>, // Página no encontrada
+    'default': <div>no encontrado</div>, // Página no encontrada
 });
 
 // Verifica si el contenedor con id 'root' existe

@@ -10,6 +10,7 @@
     max-width: $tablet-xl;
     margin: auto;
     width: 100%;
+    z-index: 10;
     .menu_ul {
       list-style-type: none;
       margin: 0;
@@ -80,7 +81,6 @@
 
 
 @media (max-width: $mobile) {
-
   .menu {
     .hamburger {
       display: flex;
@@ -145,8 +145,5 @@
     .close::after {
       transform: translate(-50%, -50%) rotate(-45deg);
     }
-
   }
-
-
 }

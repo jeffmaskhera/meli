@@ -12,13 +12,13 @@ module.exports = {
         filename: 'bundle.js',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],  // Permite resolver archivos .ts y .tsx,
-        modules: [path.resolve(__dirname, 'src'), 'node_modules'], // Asegura que Webpack busque en 'node_modules'
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/, // Asegúrate de que babel-loader maneje ts y tsx
+                test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
             },

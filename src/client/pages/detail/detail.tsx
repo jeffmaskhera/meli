@@ -11,10 +11,11 @@ import {UserModel} from "../../modules/user/domain/user-model";
 import {userUseCase} from "../../modules/user/infrastructure/provider";
 import {TypePurchaseEnum} from "../../modules/user/domain/user-enum";
 import Breadcrumb from "../../component/bread-crumb/bread-crumb";
+import NotFound from "../../component/not-found/not-found";
 
 
 interface DetailProps {
-    detailId: string; // params es 'any' como mencionaste
+    detailId: string;
 }
 
 
@@ -27,10 +28,15 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
 
     const getProducts = async (id: string)=> {
         setLoading(true)
-        const product = await productUseCase.get(id)
-        setProduct(product)
-        setImageShow(product.mainImage)
-        setLoading(false)
+        try {
+            const product = await productUseCase.get(id)
+            setProduct(product)
+            setImageShow(product.mainImage)
+            setLoading(false)
+        } catch (e) {
+            console.log("Error", e)
+            setLoading(false)
+        }
     }
 
     const getUser = async ()=> {
@@ -68,6 +74,8 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
         getUser();
     }, [])
 
+    console.log("detalle en producto", product)
+
     return (
         <div className="detail">
             <Header/>
@@ -77,14 +85,13 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                 <div className="detail__main__container">
                     {loading && <Spinner />}
                     {
-                        product &&
+                        product ?
                         <div className="detail__main__container__grid">
                             <div className="detail__main__container__grid__grid-product">
                                 <div className="detail__main__container__grid__grid-product__thumbnails">
                                     {product?.thumbnailImages?.map((item, keyId) => {
                                         const totalThumbnails = product.thumbnailImages?.length || 0;
 
-                                        // Si hemos llegado al noveno elemento visible
                                         if (keyId === 8 && totalThumbnails > 9) {
                                             return (
                                                 <React.Fragment key={keyId}>
@@ -101,7 +108,6 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                             );
                                         }
 
-                                        // Mostrar solo los primeros 9 elementos
                                         if (keyId < 9) {
                                             return (
                                                 <div
@@ -114,7 +120,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                             );
                                         }
 
-                                        return null; // Ignorar cualquier elemento después del noveno
+                                        return null;
                                     })}
                                 </div>
                                 <div className="detail__main__container__grid__grid-product__image">
@@ -197,6 +203,8 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                 </div>
                             </div>
                         </div>
+                        :
+                        <NotFound/>
                     }
                 </div>
             </div>

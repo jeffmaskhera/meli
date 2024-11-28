@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {getCache, setCache} from "../../cache/local-storage";
 import {LocalStorageEnum} from "../../cache/local-storage.enum";
 
-// Definiendo la interfaz
-interface Product {
-    query?: string;  // Categoría del producto (opcional, ya que en detalle no siempre existe)
-    title: string;   // Título del producto
+
+interface ProductBreadCrumb {
+    query?: string;
+    title: string;
 }
 
 interface BreadcrumbProps {
-    products: Product[];  // Lista de productos
-    isDetail?: boolean;   // Si es una vista de detalle
+    products: ProductBreadCrumb[];
+    isDetail?: boolean;
 }
 
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) => {
@@ -18,7 +18,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
     const [title, setTitle] = useState<string>("");
 
     // Función para obtener la categoría más frecuente
-    const getMostFrequentCategory = (products: Product[]): string => {
+    const getMostFrequentCategory = (products: ProductBreadCrumb[]): string => {
         const categoryCount: { [key: string]: number } = {};
 
         products.forEach(product => {
@@ -37,7 +37,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
 
     useEffect(() => {
         if (isDetail && products.length > 0) {
-            // Si estamos en el detalle de un producto
+            // SOLO EN DETALLE DE PRODUCTO
             const storedCategory = getCache(LocalStorageEnum.BREADCRUMB)
             if (storedCategory && products[0] && products[0].title) {
                 // Si hay una categoría almacenada en el localStorage y el producto tiene un título
@@ -52,12 +52,11 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
             // Si estamos en la página de búsqueda
             const mostFrequentCategory = getMostFrequentCategory(products);
             setCategory(mostFrequentCategory);
-            setCache(LocalStorageEnum.BREADCRUMB, mostFrequentCategory)// Guarda la categoría más frecuente en localStorage
-            setTitle("");  // No mostramos título en la página de búsqueda
+            setCache(LocalStorageEnum.BREADCRUMB, mostFrequentCategory)
+            setTitle("");
         }
     }, [products, isDetail]);
 
-    // Si la categoría está vacía (en caso de que no haya información), no renderizamos nada
     if (!category && !title) return null;
 
     // Función de búsqueda (navegar a la página de búsqueda con el query)
