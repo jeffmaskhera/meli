@@ -4,13 +4,15 @@ import {ProductModel} from "../../modules/product/domain/product-model";
 
 interface SearchResultProps {
     products: ProductModel[];
-    selectorIdProduct: (id: string) => void;
+    selectorIdProduct: (id: string, seller: string) => void;
 }
 
 const SearchResult: React.FC<SearchResultProps> = ({ products, selectorIdProduct }) => {
 
-    const selectorProduct = (id: string) => {
-        selectorIdProduct(id);
+    const selectorProduct = (item: ProductModel) => {
+        const idProduct = item.id;
+        const seller = item.sellerName
+        selectorIdProduct(idProduct, seller);
     }
 
     return (
@@ -20,11 +22,11 @@ const SearchResult: React.FC<SearchResultProps> = ({ products, selectorIdProduct
                     return (
                         <div key={i} className="search-result__container__item">
                             <div className="search-result__container__item__left-side">
-                                <div className="search-result__container__item__left-side__image" onClick={() => selectorProduct(item.id)}>
+                                <div className="search-result__container__item__left-side__image" onClick={() => selectorProduct(item)}>
                                     <img src={item.mainImage} alt={item.title} />
                                 </div>
                                 <div className="search-result__container__item__left-side__grid-info">
-                                    <h2>{item.price}</h2>
+                                    <h2>$ {item.priceFormat}</h2>
                                     <h2>{item.title}</h2>
                                 </div>
                             </div>

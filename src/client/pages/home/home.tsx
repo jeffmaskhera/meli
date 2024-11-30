@@ -1,7 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Header from "../../component/header/header";
+import {clearCache} from "../../cache/local-storage";
 
 const Home = () => {
+
+    useEffect(()=> {
+        clearCache();
+    }, [])
+
     return (
         <div className="home">
             <Header/>

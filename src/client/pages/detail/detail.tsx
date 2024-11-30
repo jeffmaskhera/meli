@@ -12,6 +12,8 @@ import {userUseCase} from "../../modules/user/infrastructure/provider";
 import {TypePurchaseEnum} from "../../modules/user/domain/user-enum";
 import Breadcrumb from "../../component/bread-crumb/bread-crumb";
 import NotFound from "../../component/not-found/not-found";
+import {getCache} from "../../cache/local-storage";
+import {LocalStorageEnum} from "../../cache/local-storage.enum";
 
 
 interface DetailProps {
@@ -25,6 +27,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
     const [userInfo, setUserInfo] = useState<UserModel>();
     const [loading, setLoading] = useState(false);
     const [imageShow, setImageShow] = useState<string>('');
+    const sellerForLocalStorage = getCache(LocalStorageEnum.SELLER)
 
     const getProducts = async (id: string)=> {
         setLoading(true)
@@ -74,8 +77,6 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
         getUser();
     }, [])
 
-    console.log("detalle en producto", product)
-
     return (
         <div className="detail">
             <Header/>
@@ -90,7 +91,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                             <div className="detail__main__container__grid__grid-product">
                                 <div className="detail__main__container__grid__grid-product__thumbnails">
                                     {product?.thumbnailImages?.map((item, keyId) => {
-                                        const totalThumbnails = product.thumbnailImages?.length || 0;
+                                        const totalThumbnails = product?.thumbnailImages?.length || 0;
 
                                         if (keyId === 8 && totalThumbnails > 9) {
                                             return (
@@ -141,7 +142,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                         {
                                             product?.oldPrice !== product?.price && <h4 className="detail__main__container__grid__grid-product__info-top__old-price">$ {formatNumberPrice(product.oldPrice)}</h4>
                                         }
-                                        <h2 className="detail__main__container__grid__grid-product__info-top__price">$ {formatNumberPrice(product?.price)}</h2>
+                                        <h2 className="detail__main__container__grid__grid-product__info-top__price">$ {product?.priceFormat}</h2>
                                         <h3>Lo que tienes que saber de este producto</h3>
                                         {
                                             product?.attributes?.fullInfo.slice(0, 6).map((item, keyId)=> {
@@ -169,7 +170,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                         <h3>Cuotas sin interéses</h3>
                                         <h3>$ {formatNumberPrice(product.creditPrice)}</h3>
                                         <p>En <span className="color-green">12 x {formatNumberPrice(product.creditPrice ? product.creditPrice / 12 : 0)} sin interés</span></p>
-                                        <p>Vendido por: {product.sellerName}</p>
+                                        <p>Vendido por: {product?.sellerName ? product.sellerName : sellerForLocalStorage}</p>
                                     </div>
 
                                     <div className="detail__main__container__grid__grid-product__third-column__select2">
@@ -183,7 +184,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
                                             />
                                         </div>
                                         <h3 className="font15">Precio más conveniente</h3>
-                                        <h3 className="detail__main__container__grid__grid-product__third-column__select2__price">$ {formatNumberPrice(product.price)}</h3>
+                                        <h3 className="detail__main__container__grid__grid-product__third-column__select2__price">$ {product?.priceFormat}</h3>
                                         <div className="detail__main__container__grid__grid-product__third-column__select2__inter-grid">
                                             <i className="fas fa-credit-card"/>
                                             <div>

@@ -3,7 +3,7 @@ import React from 'react';
 import path from 'path';
 
 import {RoutesAPIEnum, RoutesEnum} from "./interfaces/routes.enum";
-import {getItemsApi} from "./apis/item-api";
+import {getItemsApi} from "./apis/items-api";
 import {getProductApi} from "./apis/product-api";
 import {renderHomePage} from "./render-pages/home-page";
 import {renderItemsPage} from "./render-pages/item-page";

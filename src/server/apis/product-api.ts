@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import {ApiResponseProductInterface, QueryParamsInterface} from "../interfaces/interfaces";
 import {searchProduct} from "../actions/products/products";
-import {getDecimalCount} from "../../utils/helpers";
+import {formatNumberPrice} from "../../utils/helpers";
 
 export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterface>, res: Response) => {
     try {
@@ -25,11 +25,12 @@ export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterfac
                 price: {
                     currency: productResults?.currency_id || '',
                     amount: productResults?.price || 0,
-                    decimals: getDecimalCount(productResults?.price)
+                    price: productResults?.price,
+                    priceFormat: formatNumberPrice(productResults?.price)
                 },
                 condition: productResults?.condition || '',
                 free_shipping: productResults?.shipping?.free_shipping || false,
-                sellerName: productResults?.seller?.nickname || '',
+                sellerName: productResults?.['seller']?.['nickname'] || '',
                 attributes: productResults?.attributes || [],
                 soldQuantity: productResults?.initial_quantity || 0,
                 status: productResults?.status

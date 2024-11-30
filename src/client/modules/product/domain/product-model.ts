@@ -4,6 +4,7 @@ export interface ProductModel {
     condition: string;
     mainImage: string;
     price: number;
+    priceFormat: string;
     title: string;
     sellerName: string;
     quantitySold: number;

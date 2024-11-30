@@ -8,19 +8,8 @@ export interface QueryParamsInterface {
 export interface PriceInterface {
     currency: string;
     amount: number;
-    decimals: number;
-}
-
-export interface ItemsInterface {
-    id: string;
-    query: string;
-    title: string;
-    picture: string;
-    price: PriceInterface;
-    condition: string;
-    free_shipping: boolean;
-    sellerName: string;
-    attributes: any[];
+    price: number;
+    priceFormat: string;
 }
 
 export interface ApiResponseItemsInterface {
@@ -28,7 +17,7 @@ export interface ApiResponseItemsInterface {
         name: string;
         lastname: string;
     };
-    items: ItemsInterface[];
+    items: ProductInterface[];
 }
 
 export interface ProductInterface {
@@ -36,14 +25,14 @@ export interface ProductInterface {
     query: string;
     title: string;
     picture: string;
-    pictures: [];
     price: PriceInterface;
     condition: string;
     free_shipping: boolean;
     sellerName: string;
     attributes: any[];
-    soldQuantity: number;
-    status: string
+    pictures?: [];
+    soldQuantity?: number;
+    status?: string
 }
 
 export interface ApiResponseProductInterface {

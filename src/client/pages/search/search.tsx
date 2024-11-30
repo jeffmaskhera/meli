@@ -6,6 +6,8 @@ import NotFound from "../../component/not-found/not-found";
 import Breadcrumb from "../../component/bread-crumb/bread-crumb";
 import {ProductModel} from "../../modules/product/domain/product-model";
 import {productUseCase} from "../../modules/product/infrastructure/provider";
+import {setCache} from "../../cache/local-storage";
+import {LocalStorageEnum} from "../../cache/local-storage.enum";
 
 
 interface ItemsProps {
@@ -23,7 +25,8 @@ const Search: React.FC<ItemsProps> = ({ params }) => {
         setLoading(false)
     };
 
-    const sendDetail =(value: string)=> {
+    const sendDetail =(value: string, seller: string)=> {
+        setCache(LocalStorageEnum.SELLER, seller)
         window.location.href = (`/detail/${value}`)
     }
 

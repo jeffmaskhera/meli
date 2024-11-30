@@ -9,7 +9,7 @@ const mockProductData = {
             id: '1',
             condition: 'new',
             picture: 'http://image.url',
-            price: { amount: 100 },
+            price: { price: 1000, priceFormat: '1.000' },
             title: 'Product 1',
             sellerName: 'Seller 1',
             soldQuantity: 10,
@@ -24,8 +24,12 @@ const mockProductData = {
 describe('ProductsRepository', () => {
     let repository: ProductsRepository;
     let mockAxios: axiosMockAdapter;
+    let consoleSpy: jest.SpyInstance;
 
     beforeEach(() => {
+        // Espejeamos el console.error para que no imprima nada durante las pruebas
+        consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
         // Creamos una instancia del mock para cada test
         mockAxios = new axiosMockAdapter(axios);
         repository = new ProductsRepository();
@@ -34,6 +38,9 @@ describe('ProductsRepository', () => {
     afterEach(() => {
         // Resetear mocks después de cada prueba
         mockAxios.reset();
+
+        // Restauramos el comportamiento original de console.error
+        consoleSpy.mockRestore();
     });
 
     it('should return a list of products when searchPaginate is called', async () => {
@@ -46,7 +53,8 @@ describe('ProductsRepository', () => {
         expect(products[0]).toHaveProperty('id', '1');
         expect(products[0]).toHaveProperty('title', 'Product 1');
         expect(products[0].condition).toBe('Nuevo');
-        expect(products[0].price).toBe(100);
+        expect(products[0].price).toBe(1000);
+        expect(products[0].priceFormat).toBe('1.000');
         expect(products[0].thumbnailImages).toEqual(['http://thumbnail.url']);
     });
 
@@ -72,7 +80,7 @@ describe('ProductsRepository', () => {
                     id: '1',
                     condition: 'new',
                     picture: 'http://image.url',
-                    price: { amount: 200 },
+                    price: { price: 1000, priceFormat: '1.000' },
                     title: 'Product Detail',
                     sellerName: 'Seller 1',
                     soldQuantity: 20,
@@ -90,7 +98,8 @@ describe('ProductsRepository', () => {
         expect(product).toHaveProperty('id', '1');
         expect(product).toHaveProperty('title', 'Product Detail');
         expect(product.condition).toBe('Nuevo');
-        expect(product.price).toBe(200);
+        expect(product.price).toBe(1000);
+        expect(product.priceFormat).toBe('1.000');
         expect(product.thumbnailImages).toEqual(['http://detail-image.url']);
     });
 

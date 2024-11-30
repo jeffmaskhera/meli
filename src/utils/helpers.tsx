@@ -16,18 +16,3 @@ export function formatNumberPrice(number: any) {
     const formattedDecimal = decimalPart.replace(/0+$/, '');
     return formattedDecimal.length > 0 ? `${integerPart},${formattedDecimal}` : integerPart;
 }
-
-
-export const getDecimalCount = (number: any) => {
-    if (typeof number === 'string' && !number.trim()) {
-        return 0;
-    }
-    if (!Number.isFinite(Number(number))) {
-        return 0;
-    }
-    const decimalString = number.toString().split('.')[1];
-    if (!decimalString) {
-        return 0;  // No hay parte decimal
-    }
-    return decimalString.length;
-};

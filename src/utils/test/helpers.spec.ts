@@ -1,4 +1,4 @@
-import {formatNumberPrice, getDecimalCount, switchCases} from '../helpers';
+import {formatNumberPrice, switchCases} from '../helpers';
 
 describe('Test de funciones utilitarias', () => {
 
@@ -30,21 +30,6 @@ describe('Test de funciones utilitarias', () => {
             'should format number %p correctly',
             (input, expectedResult) => {
                 expect(formatNumberPrice(input)).toBe(expectedResult);
-            }
-        );
-    });
-
-    describe('getDecimalCount', () => {
-        it.each([
-            [123.45, 2],
-            [123, 0],
-            ['', 0],
-            ['invalid', 0],
-            [123.4, 1]
-        ])(
-            'should return correct decimal count for %p',
-            (input, expectedResult) => {
-                expect(getDecimalCount(input)).toBe(expectedResult);
             }
         );
     });

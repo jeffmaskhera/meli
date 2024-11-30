@@ -48,9 +48,10 @@ const builderData =(product: any): ProductModel=> {
         id: product?.['id'],
         condition: determineCondition(product?.['condition']),
         mainImage: product?.['picture'],
-        price: product?.['price']?.['amount'],
+        price: product?.['price']?.['price'],
+        priceFormat: product?.['price']?.['priceFormat'],
         title: product?.['title'] || "Unknown Product",
-        sellerName: product?.['sellerName'] || "Sin vendedor",
+        sellerName: product?.['sellerName'] || "",
         quantitySold: product?.['soldQuantity'] || 0,
         attributes: {
             fullInfo: product?.['attributes']?.map((attr: any) => `${attr.name}: ${attr.value_name}`) || [],

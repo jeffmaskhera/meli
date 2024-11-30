@@ -1,13 +1,12 @@
 import {Request, Response} from 'express';
 import {searchItems} from "../actions/products/products";
-import {getDecimalCount} from "../../utils/helpers";
+import {formatNumberPrice} from "../../utils/helpers";
 import {ApiResponseItemsInterface, QueryParamsInterface} from "../interfaces/interfaces";
 
 export const getItemsApi = async (req: Request<{}, {}, {}, QueryParamsInterface>, res: Response) => {
     try {
         const { query } = req.query;
         const searchResults = await searchItems(query);
-
         const formattedResponse: ApiResponseItemsInterface = {
             author: {
                 name: 'Jefrey',
@@ -21,7 +20,8 @@ export const getItemsApi = async (req: Request<{}, {}, {}, QueryParamsInterface>
                 price: {
                     currency: item?.currency_id,
                     amount: item?.price,
-                    decimals: getDecimalCount(item?.price)
+                    price: item?.price,
+                    priceFormat: formatNumberPrice(item?.price),
                 },
                 condition: item?.condition,
                 free_shipping: item?.shipping?.free_shipping || false,
