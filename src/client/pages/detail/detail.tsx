@@ -15,14 +15,11 @@ import NotFound from "../../component/not-found/not-found";
 import {getCache} from "../../cache/local-storage";
 import {LocalStorageEnum} from "../../cache/local-storage.enum";
 
-
 interface DetailProps {
     detailId: string;
 }
 
-
 const Detail: React.FC<DetailProps> = ({ detailId }) => {
-
     const [product, setProduct] = useState<ProductModel>();
     const [userInfo, setUserInfo] = useState<UserModel>();
     const [loading, setLoading] = useState(false);
@@ -80,7 +77,7 @@ const Detail: React.FC<DetailProps> = ({ detailId }) => {
     return (
         <div className="detail">
             <Header/>
-            {product && <Breadcrumb products={[product]} isDetail/>}
+            {product && <Breadcrumb titleProduct={product.title}/>}
 
             <div className="detail__main">
                 <div className="detail__main__container">

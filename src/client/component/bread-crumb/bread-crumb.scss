@@ -11,20 +11,22 @@
   margin: auto;
   max-width: $tablet-xl;
   padding: 5px 30px;
-
+  cursor: pointer;
   &__item {
     display: inline-block;
     margin-right: 10px;
-
+    color: $greyLight;
+    cursor: pointer;
     &:not(:last-child)::after {
       content: ">";
       margin-left: 10px;
-      color: #6c757d;
+      color: $greyLight;
+      cursor: pointer;
     }
-
 
     &--active {
       color: $blue;
+      cursor: auto;
     }
   }
 

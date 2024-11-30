@@ -18,6 +18,12 @@ const mockProductData = {
             free_shipping: true,
             pictures: [{ url: 'http://thumbnail.url' }],
         }
+    ],
+    categories: [
+        [
+            { id: '1', value_name: 'Category 1' },
+            { id: '2', value_name: 'Category 2' },
+        ]
     ]
 };
 
@@ -29,7 +35,6 @@ describe('ProductsRepository', () => {
     beforeEach(() => {
         // Espejeamos el console.error para que no imprima nada durante las pruebas
         consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
         // Creamos una instancia del mock para cada test
         mockAxios = new axiosMockAdapter(axios);
         repository = new ProductsRepository();
@@ -38,17 +43,16 @@ describe('ProductsRepository', () => {
     afterEach(() => {
         // Resetear mocks después de cada prueba
         mockAxios.reset();
-
-        // Restauramos el comportamiento original de console.error
         consoleSpy.mockRestore();
     });
 
-    it('should return a list of products when searchPaginate is called', async () => {
+
+    it('should return products and categories when searchPaginate is called', async () => {
         // Mockeamos la respuesta de la API
         mockAxios.onGet('/items').reply(200, mockProductData);
+        const { products, categories } = await repository.searchPaginate('Product 1');
 
-        const products = await repository.searchPaginate('Product 1');
-
+        // Verificar productos
         expect(products).toHaveLength(1);
         expect(products[0]).toHaveProperty('id', '1');
         expect(products[0]).toHaveProperty('title', 'Product 1');
@@ -56,6 +60,13 @@ describe('ProductsRepository', () => {
         expect(products[0].price).toBe(1000);
         expect(products[0].priceFormat).toBe('1.000');
         expect(products[0].thumbnailImages).toEqual(['http://thumbnail.url']);
+
+        // Verificar categorías
+        expect(categories).toHaveLength(2);
+        expect(categories[0]).toHaveProperty('valueId', '1');
+        expect(categories[0]).toHaveProperty('valueName', 'Category 1');
+        expect(categories[1]).toHaveProperty('valueId', '2');
+        expect(categories[1]).toHaveProperty('valueName', 'Category 2');
     });
 
     it('should handle errors gracefully in searchPaginate', async () => {

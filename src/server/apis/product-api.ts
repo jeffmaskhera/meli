@@ -26,6 +26,7 @@ export const getProductApi = async (req: Request<{}, {}, {}, QueryParamsInterfac
                     currency: productResults?.currency_id || '',
                     amount: productResults?.price || 0,
                     price: productResults?.price,
+                    decimal: productResults?.price,
                     priceFormat: formatNumberPrice(productResults?.price)
                 },
                 condition: productResults?.condition || '',

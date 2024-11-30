@@ -24,3 +24,8 @@ export interface ProductModel {
 interface attributesProduct {
     fullInfo: string[]
 }
+
+export interface CategoriesProductModel {
+    valueName: string,
+    valueId: string,
+}

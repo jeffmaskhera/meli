@@ -8,6 +8,7 @@ export interface QueryParamsInterface {
 export interface PriceInterface {
     currency: string;
     amount: number;
+    decimal: number;
     price: number;
     priceFormat: string;
 }
@@ -17,6 +18,7 @@ export interface ApiResponseItemsInterface {
         name: string;
         lastname: string;
     };
+    categories: any;
     items: ProductInterface[];
 }
 

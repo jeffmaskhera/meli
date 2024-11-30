@@ -4,7 +4,7 @@ import SearchResult from "../../component/search-result/searchResult";
 import Spinner from "../../component/spinner/spinner";
 import NotFound from "../../component/not-found/not-found";
 import Breadcrumb from "../../component/bread-crumb/bread-crumb";
-import {ProductModel} from "../../modules/product/domain/product-model";
+import {CategoriesProductModel, ProductModel} from "../../modules/product/domain/product-model";
 import {productUseCase} from "../../modules/product/infrastructure/provider";
 import {setCache} from "../../cache/local-storage";
 import {LocalStorageEnum} from "../../cache/local-storage.enum";
@@ -14,14 +14,16 @@ interface ItemsProps {
     params: any;
 }
 const Search: React.FC<ItemsProps> = ({ params }) => {
-    const [search, setSearch] = useState<string>(params);
+    const query = params
     const [products, setProducts] = useState<ProductModel[]>([]);
+    const [categories, setCategories] = useState<CategoriesProductModel[]>([]);
     const [loading, setLoading] = useState(false);
 
     const getProducts = async (value: string) => {
         setLoading(true)
-        const products = await productUseCase.searchPaginate(value)
+        const { products, categories } = await productUseCase.searchPaginate(value)
         setProducts(products);
+        setCategories(categories)
         setLoading(false)
     };
 
@@ -31,14 +33,14 @@ const Search: React.FC<ItemsProps> = ({ params }) => {
     }
 
     useEffect(()=> {
-        getProducts(search)
-    }, [search])
+        getProducts(query)
+    }, [query])
 
     return (
         <div className="search">
             {loading && <Spinner />}
             <Header/>
-            <Breadcrumb products={products}/>
+            <Breadcrumb categories={categories} query={query} />
             <div>
                 {products && products.length > 0 ?
                     <SearchResult products={products} selectorIdProduct={sendDetail}/>

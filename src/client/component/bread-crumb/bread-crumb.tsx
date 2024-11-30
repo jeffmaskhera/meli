@@ -1,68 +1,68 @@
 import React, {useEffect, useState} from 'react';
 import {getCache, setCache} from "../../cache/local-storage";
 import {LocalStorageEnum} from "../../cache/local-storage.enum";
-
-
-interface ProductBreadCrumb {
-    query?: string;
-    title: string;
-}
+import {CategoriesProductModel} from "../../modules/product/domain/product-model";
 
 interface BreadcrumbProps {
-    products: ProductBreadCrumb[];
-    isDetail?: boolean;
+    categories?: CategoriesProductModel[];
+    query?: string;
+    titleProduct?: string;
 }
 
-const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) => {
-    const [category, setCategory] = useState<string>("");
-    const [title, setTitle] = useState<string>("");
+// BreadCrumb Strategies
+const strategyMap = {
+    titleProduct: (titleProduct: string) => {
+        const storedCategory = getCache(LocalStorageEnum.BREADCRUMB);
+        if (storedCategory) {
+            return [storedCategory, titleProduct];
+        }
+        return [titleProduct];
+    },
+    categories: (categories: CategoriesProductModel[]) => {
+        const countMap: { [key: string]: number } = {};
 
-    // Función para obtener la categoría más frecuente
-    const getMostFrequentCategory = (products: ProductBreadCrumb[]): string => {
-        const categoryCount: { [key: string]: number } = {};
-
-        products.forEach(product => {
-            const category = product.query;
-            if (category) {
-                categoryCount[category] = (categoryCount[category] || 0) + 1;
-            }
+        categories.forEach((category) => {
+            const { valueName } = category;
+            countMap[valueName] = (countMap[valueName] || 0) + 1;
         });
 
-        const mostFrequentCategory = Object.entries(categoryCount).reduce((max, current) =>
-            current[1] > max[1] ? current : max
-        );
+        return Object.entries(countMap)
+            .filter(([key, count]) => count > 1)
+            .sort((a, b) => b[1] - a[1])
+            .map((entry) => entry[0]);
+    },
+    query: (query: string) => {
+        return [query];
+    },
+};
 
-        return mostFrequentCategory ? mostFrequentCategory[0] : "Sin categoría";
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ categories = [], query, titleProduct }) => {
+    const [breadcrumbItems, setBreadcrumbItems] = useState<string[]>([]);
+
+    // Determine strategies
+    const getBreadcrumbItems = () => {
+        if (titleProduct) {
+            return strategyMap.titleProduct(titleProduct);
+        }
+        if (categories?.length) {
+            setCache(LocalStorageEnum.BREADCRUMB, query);
+            return strategyMap.categories(categories);
+        }
+        if (query) {
+            return strategyMap.query(query);
+        }
+        return [];
     };
 
     useEffect(() => {
-        if (isDetail && products.length > 0) {
-            // SOLO EN DETALLE DE PRODUCTO
-            const storedCategory = getCache(LocalStorageEnum.BREADCRUMB)
-            if (storedCategory && products[0] && products[0].title) {
-                // Si hay una categoría almacenada en el localStorage y el producto tiene un título
-                setCategory(storedCategory);
-                setTitle(products[0].title);
-            } else {
-                // Si no hay categoría almacenada o no hay un producto con título, no mostramos nada
-                setCategory("");
-                setTitle("");
-            }
-        } else if (products.length > 0) {
-            // Si estamos en la página de búsqueda
-            const mostFrequentCategory = getMostFrequentCategory(products);
-            setCategory(mostFrequentCategory);
-            setCache(LocalStorageEnum.BREADCRUMB, mostFrequentCategory)
-            setTitle("");
-        }
-    }, [products, isDetail]);
+        setBreadcrumbItems(getBreadcrumbItems());
+    }, [categories, titleProduct, query]);
 
-    if (!category && !title) return null;
-
-    // Función de búsqueda (navegar a la página de búsqueda con el query)
-    const searching = () => {
+    const handleSearch = (category: string) => {
         window.location.href = `/items?search=${category}`;
     };
+
+    if (breadcrumbItems.length === 0) return null;
 
     return (
         <nav aria-label="breadcrumb">
@@ -71,41 +71,22 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ products, isDetail = false }) =
                     <a href="/" className="breadcrumb__link">Volver al listado</a>
                 </li>
 
-                {category && !title && (
-                    <li className="breadcrumb__item breadcrumb__item--active" aria-current="page">
-                        {category}
+                {breadcrumbItems.map((item, index) => (
+                    <li
+                        key={index}
+                        className={`breadcrumb__item ${titleProduct && index === breadcrumbItems.length - 1 ? 'breadcrumb__item--active' : ''}`}
+                        aria-current={index === breadcrumbItems.length - 1 ? 'page' : undefined}
+                    >
+                        {index === breadcrumbItems.length - 1 ? (
+                            item
+                        ) : (
+                            <span className="breadcrumb__link" onClick={() => handleSearch(item)}>{item}</span>
+                        )}
                     </li>
-                )}
-
-                {category && title && (
-                    <>
-                        <li
-                            className="breadcrumb__item breadcrumb__item--active pointer"
-                            aria-current="page"
-                            onClick={searching}
-                        >
-                            {category}
-                        </li>
-                        <li
-                            className="breadcrumb__item breadcrumb__item--active"
-                            aria-current="page"
-                        >
-                            {title}
-                        </li>
-                    </>
-                )}
-
-                {title && !category && (
-                    <li className="breadcrumb__item breadcrumb__item--active" aria-current="page">
-                        {title}
-                    </li>
-                )}
+                ))}
             </ol>
         </nav>
     );
 };
 
 export default Breadcrumb;
-
-
-

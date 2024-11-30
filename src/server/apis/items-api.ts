@@ -12,6 +12,7 @@ export const getItemsApi = async (req: Request<{}, {}, {}, QueryParamsInterface>
                 name: 'Jefrey',
                 lastname: 'Sánchez'
             },
+            categories: searchResults.map((item) => item.attributes),
             items: searchResults.map(item => ({
                 id: item?.id,
                 query: query,
@@ -21,6 +22,7 @@ export const getItemsApi = async (req: Request<{}, {}, {}, QueryParamsInterface>
                     currency: item?.currency_id,
                     amount: item?.price,
                     price: item?.price,
+                    decimal: item?.price,
                     priceFormat: formatNumberPrice(item?.price),
                 },
                 condition: item?.condition,

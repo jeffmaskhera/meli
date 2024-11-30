@@ -1,6 +1,6 @@
 import {ProductsRepositoryInterface} from "../domain/products-repository.interface";
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {ProductModel} from "../domain/product-model";
+import {CategoriesProductModel, ProductModel} from "../domain/product-model";
 import {switchCases} from "../../../../utils/helpers";
 
 export class ProductsRepository implements ProductsRepositoryInterface {
@@ -13,7 +13,7 @@ export class ProductsRepository implements ProductsRepositoryInterface {
         this.axiosInstance = axios.create(config);
     }
 
-    async searchPaginate(productName: string): Promise<ProductModel[]> {
+    async searchPaginate(productName: string): Promise<{ products: ProductModel[]; categories: CategoriesProductModel[] }> {
         try {
             const response = await this.axiosInstance.get('/items', {
                 params: { query: productName },
@@ -22,7 +22,13 @@ export class ProductsRepository implements ProductsRepositoryInterface {
             const products = productsResponse.map((item: any)=> {
                 return builderData(item)
             })
-            return products;
+
+            const rawCategories = response.data.categories || [];
+            const categories = rawCategories.reduce((acc: CategoriesProductModel[], categoryArray: any[]) => {
+                const processed = categoryArray.map((item: any) => builderCategories(item));
+                return [...acc, ...processed];
+            }, []);
+            return { products, categories };
         } catch (error) {
             console.error('Error fetching product:', error);
             throw new Error('Failed to fetch product data');
@@ -67,6 +73,13 @@ const builderData =(product: any): ProductModel=> {
         creditPrice: increaseBy30Percent(product?.['price']?.['amount'])
     }
 }
+
+const builderCategories = (product: any): CategoriesProductModel => {
+    return {
+        valueId: product?.id || 'N/A', // Si `id` no existe, asigna un valor predeterminado
+        valueName: product?.value_name || 'Sin nombre', // Usa `value_name` en lugar de `condition`
+    };
+};
 
 const determineCondition =(condition: string): string=> {
     return switchCases(condition, {
