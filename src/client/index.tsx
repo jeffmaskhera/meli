@@ -7,8 +7,6 @@ import Detail from "./pages/detail/detail";
 import {switchCases} from "../utils/helpers";
 import {RoutesClient} from "./types/types";
 
-;
-
 const linkElement = document.createElement('link');
 linkElement.rel = 'preconnect';
 linkElement.href = 'https://fonts.googleapis.com';
@@ -54,4 +52,3 @@ if (rootElement) {
     // Si no se encuentra el contenedor, muestra un mensaje de error
     console.error('Contenedor "root" no encontrado en el DOM.');
 }
-
