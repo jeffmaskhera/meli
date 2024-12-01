@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom/client'; // Asegúrate de usar react-dom/client
+import ReactDom from 'react-dom/client';
 import './assets/styles/global.scss';
 import Home from './pages/home/home';
 import Search from "./pages/search/search";
@@ -15,7 +15,7 @@ document.head.appendChild(linkElement);
 const linkGFontElement = document.createElement('link');
 linkGFontElement.rel = 'preconnect';
 linkGFontElement.href = 'https://fonts.gstatic.com';
-linkGFontElement.crossOrigin = 'anonymous'; // Cambiado de true a 'anonymous'
+linkGFontElement.crossOrigin = 'anonymous';
 document.head.appendChild(linkGFontElement);
 
 const fontLinkElement = document.createElement('link');
